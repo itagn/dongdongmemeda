@@ -3,6 +3,7 @@
  */
 let info = {
   author: {
+    email: 'itagn@foxmail.com',
     github: 'https://github.com/itagn',
     blog: 'http://itagn.xyz',
     tieba: 'https://tieba.baidu.com/f?kw=东东么么哒',
