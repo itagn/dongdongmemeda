@@ -24,6 +24,7 @@ let info = {
   },
   email: {
     host: 'smtp.dongdongmemeda.com',
+    port: 25,
     user: 'admin@dongdongmemeda.com',
     pass: 'xxxxxxxx'
   },
@@ -33,7 +34,6 @@ let info = {
     email: 'itagn@foxmail.com'
   },
   author: {
-    email: 'itagn@foxmail.com',
     github: 'https://github.com/itagn',
     blog: 'http://itagn.xyz',
     tieba: 'https://tieba.baidu.com/f?kw=东东么么哒',

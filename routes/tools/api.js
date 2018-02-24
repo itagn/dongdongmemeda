@@ -42,7 +42,7 @@ const api = {
       db: info.redis.db
     }
     // 创建redis连接
-    const client = redis.createClient(config)
+    const client = redis.createClient(config);
     return new Promise((resolve, reject) => {
       // 保存数据到redis
       client.set(auth, JSON.stringify(str), 'EX', expires, function (err) {
@@ -59,18 +59,17 @@ const api = {
   sendEmail(email ,auth ,expires){
     // 发件人信息
     const config = {
-      host: info.email.host, //邮件类型
-      port: 25, // 端口
-      transportMethod: 'SMTP', // 发送邮件方法
-      auth: {
-        user: info.email.user, // 发件人账户
-        pass: info.email.pass // 发件人密码
+      "host": info.email.host, //邮件类型
+      "port": info.email.port, // 端口
+      "auth": {
+        "user": info.email.user, // 发件人账户
+        "pass": info.email.pass // 发件人密码
       }
     }
-    const smtpTransport = nodeMailer.createTransport(config)
+    const smtpTransport = nodeMailer.createTransport(config);
     const sendTime = (new Date()).getFullYear()+'-'+((new Date()).getMonth()+1)+'-'+(new Date()).getDate()
     const mailOption = {
-      from: config.auth.user, // 发件人账户
+      from: info.email.user, // 发件人账户
       to: email, // 收件人账户
       subject: '找回密码服务', // 邮件主题
       html: `<pre>谁家的大佬：

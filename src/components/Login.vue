@@ -15,9 +15,9 @@
               </el-tab-pane>
             </el-tabs>
             <div v-if="allow.isLogin" class="log-box">
-              <el-input v-model="login.username" class="login-user" @blur="firstYzm" ></el-input>
-              <el-input v-model="login.password" type="password" class="login-password"></el-input>
-              <el-input v-model="login.myYzm" placeholder="验证码" class="login-yzm" @blur="logYzm" @keyup.enter.native="enterSignIn"></el-input>
+              <el-input v-model="login.username" class="login-user" @keyup.enter.native="focus('.login-password')"></el-input>
+              <el-input v-model="login.password" type="password" class="login-password" @keyup.enter.native="focus('.login-yzm')"></el-input>
+              <el-input v-model="login.myYzm" placeholder="验证码" class="login-yzm" @focus="firstYzm" @blur="logYzm" @keyup.enter.native="enterSignIn"></el-input>
               <canvas id="canvasYZM" class="login-yzm-img" @click="getYzm">{{login.yzm}}</canvas>
               <a class="login-forget" @click="forgetPass" >找回密码</a>
               <a class="login-youke" @click="youke">游客通道</a>
@@ -29,40 +29,39 @@
                 <el-form-item
                   prop="username"
                   label="用户名"
-                  v-if="register.step == 1"
+                  v-show="register.step == 1"
                   :rules="[{ required: true, message: '请输入用户名', trigger: 'blur' }]">
-                  <el-input v-model="register.username" class="reg-user" @blur="regUser"></el-input>
+                  <el-input v-model="register.username" class="reg-user" @blur="regUser" @keyup.enter.native="focus('.reg-password')"></el-input>
                 </el-form-item>
                 <el-form-item
                   prop="password"
                   label= "新密码"
-                  v-if="register.step == 1"
+                  v-show="register.step == 1"
                   :rules="[{ required: true, message: '请输入密码', trigger: 'blur' }]">
-                  <el-input v-model="register.password" type="password" class="reg-password"></el-input>
+                  <el-input v-model="register.password" type="password" class="reg-password" @keyup.enter.native="focus('.reg-repassword')"></el-input>
                 </el-form-item>
                 <el-form-item
                   prop="repassword"
                   label= "确认密码"
-                  v-if="register.step == 1"
+                  v-show="register.step == 1"
                   @keyup.enter.native="register.step=2"
                   :rules="[{ required: true, message: '请再次输入密码', trigger: 'blur' }]">
-                  <el-input v-model="register.repassword" type="password" class="reg-repassword"></el-input>
+                  <el-input v-model="register.repassword" type="password" class="reg-repassword" @keyup.enter.native="focus('.reg-email')"></el-input>
                 </el-form-item>
                 <el-form-item
                   prop="email"
                   label="邮箱"
-                  v-if="register.step == 2"
+                  v-show="register.step == 2"
                   :rules="[{ required: true, message: '请输入邮箱地址', trigger: 'blur' },
                       { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' }]">
-                  <el-input v-model="register.email" class="reg-email" @blur="regEmail"></el-input>
+                  <el-input v-model="register.email" class="reg-email" @blur="regEmail" @keyup.enter.native="focus('.reg-yaoqing')"></el-input>
                 </el-form-item>
                 <el-form-item
                   prop="yaoqing"
                   label="邀请码"
-                  v-if="register.step == 2"
-                  @keyup.enter.native="enterSignUp('register')"
+                  v-show="register.step == 2"
                   :rules="[{ required: true, message: '请输入邀请码', trigger: 'blur' }]">
-                  <el-input v-model="register.yaoqing" class="reg-yaoqing"></el-input>
+                  <el-input v-model="register.yaoqing" class="reg-yaoqing" @keyup.enter.native="signUp('register')"></el-input>
                 </el-form-item>
                 <el-form-item class="reg-button">
                   <el-button class="reg-button-next" v-if="register.step == 1"
@@ -86,16 +85,16 @@
         <el-step title="步骤 3" description="重置密码成功"></el-step>
       </el-steps>
       <div class="forget-content">
-        <div v-if="active==0||active==1" class="step-one">
-          <el-input v-model="forget.username" placeholder="用户名" class="forget-username" @blur="forgetUsername" @keyup.enter.native="enterEmail"></el-input>
-          <el-input v-model="forget.auth" placeholder="验证码" class="forget-auth" v-if="!allow.isSend" @blur="forgetAuth" @keyup.enter.native="enterAuth"></el-input>
-          <el-button class="send-button" @click="sendEmail" v-if="allow.isSend":loading="forget.emailLoading">发送验证码</el-button>
-          <el-button class="next-button" @click="sendAuth" v-if="allow.isSure":loading="forget.authLoading">确认</el-button>
+        <div v-if="active==1" class="step-one">
+          <el-input v-model="forget.username" placeholder="用户名" class="forget-username" @blur="forgetUsername" @keyup.enter.native="sendEmail"></el-input>
+          <el-input v-model="forget.auth" placeholder="验证码" class="forget-auth" v-show="!allow.isSend" @blur="forgetAuth" @keyup.enter.native="sendAuth"></el-input>
+          <el-button class="send-button" @click="sendEmail" v-if="allow.isSend" :loading="forget.emailLoading">发送验证码</el-button>
+          <el-button class="next-button" @click="sendAuth" v-if="allow.isSure" :loading="forget.authLoading">确认</el-button>
           <el-button class="cancel-button" @click="stepCancel" v-if="allow.isReset">取消</el-button>
         </div>
         <div v-if="active==2" class="step-two">
-          <el-input v-model="forget.password" type="password" placeholder="新密码" class="forget-password"></el-input>
-          <el-input v-model="forget.repassword" type="password" placeholder="确认密码" class="forget-repassword" @keyup.enter.native="enterPassword"></el-input>
+          <el-input v-model="forget.password" type="password" placeholder="新密码" @keyup.enter.native="focus('.forget-repassword')" class="forget-password"></el-input>
+          <el-input v-model="forget.repassword" type="password" placeholder="确认密码" class="forget-repassword" @keyup.enter.native="sendPassword"></el-input>
           <el-button class="next-button" @click="sendPassword" v-if="allow.isSure":loading="forget.passLoading">确认</el-button>
           <el-button class="cancel-button" @click="stepCancel" v-if="allow.isReset">取消</el-button>
         </div>
@@ -136,7 +135,7 @@
           loading: false,
           yzm: '', // 生成的验证码
         },
-        active: 0,
+        active: 1,
         forget: { // 忘记密码的元素
           username: '',
           auth: '',
@@ -171,16 +170,16 @@
       })
     },
     mounted: function () {
-      const canvas = document.getElementById('canvas')
-      const [WIDTH, HEIGHT, maxR, minR] = [window.innerWidth, window.innerHeight, 15, 5]
+      const canvas = document.getElementById('canvas');
+      const [WIDTH, HEIGHT, maxR, minR] = [window.innerWidth, window.innerHeight, 15, 5];
       let POINT = 35
       if(window.innerWidth<780){
           POINT = 15
       }else if(window.innerWidth<1280){
           POINT = 25
       }
-      const bk = new background(canvas, WIDTH, HEIGHT, POINT, maxR, minR)
-      bk.run()
+      const bk = new background(canvas, WIDTH, HEIGHT, POINT, maxR, minR);
+      bk.run();
     },
     methods: {
       // 切换登录和注册和邀请码
@@ -223,31 +222,37 @@
       },
       // 第一次获取验证码
       firstYzm: function () {
-        if(this.login.username.trim() != ''){
-          if(this.login.yzm == ''){
-            this.getYzm()
-          }
-        }else{
-          this.login.username = ''
+        if(this.login.yzm === ''){
+          this.getYzm();
         }
       },
       // 获取验证码
       getYzm: function () {
-        if(this.login.username){
           const yzm = Math.random().toString(16).slice(2, 6)
-          this.login.yzm = yzm
+          this.login.yzm = yzm;
           const canvas = document.getElementById('canvasYZM')
           const context = canvas.getContext('2d')
           context.clearRect(0, 0, canvas.width, canvas.height);
           context.font = "120px 微软雅黑";
           context.fillText(yzm, 5, 130);
-        }
       },
       enterSignIn: function () {
         if(this.login.myYzm.length==4){
-          this.signIn()
+          this.signIn();
         }else{
           this.errMsg('验证码是标准的4位身材')
+        }
+      },
+      focus(el){
+        if(el === '.reg-email'){
+          this.register.step++;
+          setTimeout(function () {
+            let input = document.querySelector(el+' input');
+            input.focus();
+          }, 50)
+        } else {
+          let input = document.querySelector(el+' input');
+          input.focus();
         }
       },
       // 登录操作
@@ -300,8 +305,11 @@
       },
       // 打开忘记密码模块
       forgetPass: function () {
-        this.allow.isMask = true
-        this.allow.isForget = true
+        this.allow.isMask = true;
+        this.allow.isForget = true;
+        setTimeout(() => {
+          this.focus('.forget-username');
+        }, 50);
       },
       checkName: function(str){
         if(str.length < 11){
@@ -346,9 +354,6 @@
       // 注册中
       signUpPrev: function () {
         this.register.step--;
-      },
-      enterSignUp: function (form) {
-        this.signUp(form)
       },
       // 注册
       signUp: function (form) {
@@ -407,7 +412,7 @@
         this.allow.isMask = false;
         this.allow.isSend = true;
         this.allow.isSure = false;
-        this.active = 0
+        this.active = 1
         this.forget = {
           username: '',
           auth: '',
@@ -419,15 +424,6 @@
       checkEmail: function (email) {
         const check = new RegExp("[\\w!#$%&'*+/=?^_`{|}~-]+(?:\\.[\\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\\w](?:[\\w-]*[\\w])?\\.)+[\\w](?:[\\w-]*[\\w])?")
         return check.test(email)
-      },
-      enterEmail: function () {
-        this.sendEmail()
-      },
-      enterAuth: function () {
-        this.sendAuth()
-      },
-      enterPassword: function () {
-        this.sendPassword()
       },
       // 给邮箱发送验证码
       sendEmail: function () {
@@ -441,10 +437,12 @@
           this.$http.post('/forget/sendEmail', data).then((res, req) => {
             this.forget.emailLoading = false;
             if(res.body.status == 200){
-              this.active++;
               this.allow.isSend = false;
               this.allow.isSure = true;
               this.succMsg('快去看看给你邮箱发的情书');
+              setTimeout(() => {
+                this.focus('.forget-auth');
+              }, 50)
             }else{
               this.errMsg(res.body.msg)
             }
@@ -463,7 +461,10 @@
         this.$http.post('/forget/sendAuth', data).then((res, req) => {
           this.forget.authLoading = false
           if(res.body.status == 200){
-            this.active++
+            this.active++;
+            setTimeout(()=>{
+              this.focus('.forget-password');
+            }, 50);
           }else{
             this.errMsg(res.body.msg)
           }
@@ -533,26 +534,20 @@
   @text-indent: 35px;
   .center (@width, @height){
     position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    margin: auto;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     width: @width;
     height: @height;
   }
-
   .content{
     width: 100%;
     height: 100%;
-    .body{
-      width: 100%;
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-    }
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
     .mask{
-      position: absolute;
+      position: fixed;
       top: 0;
       left: 0;
       width: 100%;
