@@ -128,8 +128,8 @@ module.exports = class extends baseController {
               rooter = '-',
               blackMD = '-',
               blackTime = '-',
-              fans = '-',
-              star = '-'
+              fans = [],
+              star = []
             } = user.data[0];
             const userInfo = { username,email,createdOn,userImgURL,rooter,blackMD,blackTime,fans,star };
             userInfo.userId = user.data[0]._id;
@@ -251,8 +251,8 @@ module.exports = class extends baseController {
             rooter = '-',
             blackMD = '-',
             blackTime = '-',
-            fans = '-',
-            star = '-'
+            fans = [],
+            star = []
           } = user.data[0];
           const userInfo = { username,email,userImgURL,createdOn,rooter,blackMD,blackTime,fans,star }
           userInfo.userId = user.data[0]._id;
@@ -267,18 +267,18 @@ module.exports = class extends baseController {
 
     // 添加粉丝
     this.addFans = async(ctx, next) => {
-      const params = ctx.request.body
-      const starUser = await this.DBModule.User.findUser({ _id: params.starId })
-      const fansUser = await this.DBModule.User.findUser({ _id: params.fansId })
-      let arr = starUser.data[0].fans
-      arr.push({ username: params.fansName, userId: params.fansId })
-      const starFans = arr
-      let brr = fansUser.data[0].star
-      brr.push({ username: params.starName, userId: params.starId })
-      const fansStar = brr
+      const params = ctx.request.body;
+      const starUser = await this.DBModule.User.findUser({ _id: params.starId });
+      const fansUser = await this.DBModule.User.findUser({ _id: params.fansId });
+      let arr = starUser.data[0].fans;
+      arr.push({ username: params.fansName, userId: params.fansId });
+      const starFans = arr;
+      let brr = fansUser.data[0].star;
+      brr.push({ username: params.starName, userId: params.starId });
+      const fansStar = brr;
 
-      const str = await this.DBModule.User.updateUser({ _id: params.starId }, { fans: starFans })
-      const fan =  await this.DBModule.User.updateUser({ _id: params.fansId }, { star: fansStar })
+      const str = await this.DBModule.User.updateUser({ _id: params.starId }, { fans: starFans });
+      const fan =  await this.DBModule.User.updateUser({ _id: params.fansId }, { star: fansStar });
       if(str.status=='success'&&fan.status=='success'){
         ctx.body = { status: 200, msg: '关注成功' }
       }else{
@@ -288,26 +288,26 @@ module.exports = class extends baseController {
 
     // 删除粉丝
     this.subFans = async(ctx, next) => {
-      const params = ctx.request.body
-      const starUser = await this.DBModule.User.findUser({ _id: params.starId })
-      const fansUser = await this.DBModule.User.findUser({ _id: params.fansId })
-      let arr = []
+      const params = ctx.request.body;
+      const starUser = await this.DBModule.User.findUser({ _id: params.starId });
+      const fansUser = await this.DBModule.User.findUser({ _id: params.fansId });
+      let arr = [];
       starUser.data[0].fans.forEach(function (val, index) {
         if(val.userId != params.fansId){
-          arr.push(val)
+          arr.push(val);
         }
       })
-      const starFans = arr
-      let brr = []
+      const starFans = arr;
+      let brr = [];
       fansUser.data[0].star.forEach(function (val, index) {
-        if(val.userId != params.fansId){
-          brr.push(val)
+        if(val.userId != params.starId){
+          brr.push(val);
         }
       })
-      const fansStar = brr
+      const fansStar = brr;
 
-      const str = await this.DBModule.User.updateUser({ _id: params.starId }, { fans: starFans })
-      const fan =  await this.DBModule.User.updateUser({ _id: params.fansId }, { star: fansStar })
+      const str = await this.DBModule.User.updateUser({ _id: params.starId }, { fans: starFans });
+      const fan =  await this.DBModule.User.updateUser({ _id: params.fansId }, { star: fansStar });
       if(str.status=='success'&&fan.status=='success'){
         ctx.body = { status: 200, msg: '取消关注成功' }
       }else{

@@ -198,21 +198,18 @@
             }
             this.comments = arr
             for(let i=0;i<this.comments.length;i++){
-              this.visible[i] = false
+              this.visible[i] = false;
             }
-            this.see = [...this.visible]
-            this.isReply = [...this.visible]
-            this.tocomment = [...this.visible]
-            this.toreply = [...this.visible]
+            this.see = this.isReply = this.tocomment = this.toreply = [...this.visible];
             if(res.body.isFans){
-              this.fanBu = '取消关注'
+              this.fanBu = '取消关注';
             }else{
-              this.fanBu = '加个关注'
+              this.fanBu = '加个关注';
             }
-            this.author = res.body.author
-            this.author.userId = res.body.data.createdBy
-            this.blog = resBlog
-            this.blog.blogId = bid
+            this.author = res.body.author;
+            this.author.userId = res.body.data.createdBy;
+            this.blog = resBlog;
+            this.blog.blogId = bid;
           }
         }else if(res.body.status == 707){
           this.errMsg('这货疑似被人干掉了')

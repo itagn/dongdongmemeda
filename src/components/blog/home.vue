@@ -17,8 +17,8 @@
             <div class="user-blog" v-if="user.isShow">
               <h5>博文数量: <span>{{user.blogNum}}</span></h5>
               <div class="user-fs">
-                <span class="fs">关注: <span>{{user.star.length}}</span></span>
-                <span class="fs">粉丝: <span>{{user.fans.length}}</span></span>
+                <span class="fs">关注: <span>{{user.starLen}}</span></span>
+                <span class="fs">粉丝: <span>{{user.fansLen}}</span></span>
               </div>
               <el-button @click="createBlogs" >写博客</el-button>
               <br/><br/>
@@ -172,8 +172,8 @@ export default {
             }else{
               this.user.rooter = 'other'
             }
-            this.user.fansLen = res.body.data.fans.length
-            this.user.starLen = res.body.data.star.length
+            this.user.fansLen = res.body.data.fansLen
+            this.user.starLen = res.body.data.starLen
             this.user.blogNum = res.body.data.myBlogNum
             this.userImgURL = res.body.data.userImgURL
           }else{
@@ -364,6 +364,7 @@ export default {
               width: 100%;
               height: 100%;
               /*background-color: #ccc;*/
+              background-image: url('../../assets/bk.jpg');
               background-size: 100% 100%;
               .blog-title{
                 position: relative;

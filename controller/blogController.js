@@ -28,11 +28,11 @@ module.exports = class extends baseController {
             createdBy = '-',
             author = '-',
             createdOn = '-',
-            readNum = '-',
+            readNum = 0,
             secret = '-',
             field = '-',
             level = '-',
-            commentNum = '-'
+            commentNum = 0
           } = blogs[i];
           const blogObj = { _id,createdBy,author,createdOn,readNum,secret,field,level,commentNum };
           blogObj.title = blogs[i].title.replace(/&lt;/g,'<').replace(/&gt;/g,'>');
@@ -41,25 +41,25 @@ module.exports = class extends baseController {
         }
         const total = Math.ceil(blogs.length/len) * len
         if(params.username != '游客'){
-          const result = await this.DBModule.User.findUser({ username: params.username })
-          const userImgURL = result.data[0].userImgURL
-          const myBlogs = await this.DBModule.Blog.findBlogs({ createdBy: params.userId })
-          const myBlogNum = myBlogs.data.length
+          const result = await this.DBModule.User.findUser({ username: params.username });
+          const userImgURL = result.data[0].userImgURL;
+          const myBlogs = await this.DBModule.Blog.findBlogs({ createdBy: params.userId });
+          const myBlogNum = myBlogs.data.length;
           const reqData = {
             resBlog: resBlog,
             rooter: 'admin',
             userImgURL: userImgURL,
             total: total,
-            myBlogNum: myBlogNum,
-            fans: result.data[0].fans,
-            star: result.data[0].star,
+            myBlogNum: myBlogNum
           }
+          reqData.starLen = result.data[0].star.length;
+          reqData.fansLen = result.data[0].fans.length;
           if(result.status == 'success' && result.data[0].rooter == 'admin'){
-            reqData.rooter = 'admin'
-            ctx.body = { status: 200, msg: '博客查询成功', data: reqData }
+            reqData.rooter = 'admin';
+            ctx.body = { status: 200, msg: '博客查询成功', data: reqData };
           }else{
-            reqData.rooter = 'other'
-            ctx.body = { status: 200, msg: '博客查询成功', data: reqData }
+            reqData.rooter = 'other';
+            ctx.body = { status: 200, msg: '博客查询成功', data: reqData };
           }
         }else{
           const reqData = {
@@ -120,7 +120,7 @@ module.exports = class extends baseController {
             createdOn = '-',
             field = '-',
             secret = '-',
-            commentNum = '-'
+            commentNum = 0
           } = result.data[0];
           const data = { createdBy,author,createdOn,field,secret,commentNum };
           data.title = result.data[0].title.replace(/&lt;/g,'<').replace(/&gt;/g,'>');
@@ -137,9 +137,9 @@ module.exports = class extends baseController {
                 createdOn = '-',
                 createdBy = '-',
                 blogId = '-',
-                reply = '-',
-                up = '-',
-                down = '-'
+                reply = [],
+                up = 0,
+                down = 0
               } = comments.data[i];
               const replys = { author,_id,createdOn,createdBy,blogId,reply,up,down };
               replys.userImgURL = user.data[0].userImgURL;
@@ -156,16 +156,16 @@ module.exports = class extends baseController {
             let {
               username = '-',
               userImgURL = '-',
-              email = '-',
-              starLen = '-',
-              fansLen = '-'
+              email = '-'
             } = authorObj.data[0];
-            const author = { username,userImgURL,email,starLen,fansLen };
+            const author = { username,userImgURL,email };
             author.boke = boke.data;
-            let isFans = false
+            author.starLen = authorObj.data[0].star.length;
+            author.fansLen = authorObj.data[0].fans.length;
+            let isFans = false;
             authorObj.data[0].fans.forEach(function (val, index) {
               if(val.userId == params.userId ){
-                isFans = true
+                isFans = true;
               }
             })
             ctx.body = { status: 200, msg: comments.msg, data: data, comment: arr, author: author, isFans: isFans }
@@ -238,9 +238,9 @@ module.exports = class extends baseController {
           createdOn = '-',
           author = '-',
           blogId = '-',
-          reply = '-',
-          up = '-',
-          down = '-'
+          reply = [],
+          up = 0,
+          down = 0
         } = result.data;
         const arr ={ _id,createdBy,createdOn,author,blogId,reply,up,down };
         arr.userImgURL = user.data[0].userImgURL;
@@ -268,9 +268,9 @@ module.exports = class extends baseController {
             createdOn = '-',
             author = '-',
             blogId = '-',
-            reply = '-',
-            up = '-',
-            down = '-'
+            reply = [],
+            up = 0,
+            down = 0
           } = comments.data[i];
           const replys ={ _id,createdBy,createdOn,author,blogId,reply,up,down };
           replys.userImgURL = user.data[0].userImgURL;
@@ -319,9 +319,9 @@ module.exports = class extends baseController {
               createdBy = '-',
               author = '-',
               blogId = '-',
-              reply = '-',
-              up = '-',
-              down = '-',
+              reply = [],
+              up = 0,
+              down = 0,
               _id = '-'
             } = val;
             const replys = { createdOn,createdBy,author,blogId,reply,up,down,_id };
