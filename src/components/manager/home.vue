@@ -146,22 +146,6 @@
           }
         }
       },
-      // 失败的提示消息
-      errMsg: function (str) {
-        this.$message({
-          showClose: true,
-          message: str,
-          type: 'error'
-        });
-      },
-      // 成功的提示消息
-      succMsg: function (str) {
-        this.$message({
-          showClose: true,
-          message: str,
-          type: 'success'
-        });
-      },
       // 生成邀请码
       setYaoqing: function () {
         this.yaoqingma = Math.random().toString(16).slice(2,8).toLocaleUpperCase()

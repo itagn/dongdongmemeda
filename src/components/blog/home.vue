@@ -136,22 +136,6 @@ export default {
     layOut,
   },
   methods: {
-    // 失败的提示消息
-    errMsg: function (str) {
-      this.$message({
-        showClose: true,
-        message: str,
-        type: 'error'
-      });
-    },
-    // 成功的提示消息
-    succMsg: function (str) {
-      this.$message({
-        showClose: true,
-        message: str,
-        type: 'success'
-      });
-    },
     message: function (data) {
       this.blogs = data
     },
@@ -179,9 +163,9 @@ export default {
           }else{
             this.userImgURL = `../../../static/user/user.jpg`
           }
-          this.blogs = res.body.data.resBlog
-          this.hotBlogs = res.body.data.resBlog
-          this.page = res.body.data.total
+          this.blogs = res.body.data.resBlog;
+          this.hotBlogs = res.body.data.resBlog;
+          this.page = res.body.data.total;
         }else{
           this.errMsg(res.body.msg)
         }

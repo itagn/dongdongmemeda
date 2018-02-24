@@ -41,24 +41,7 @@
     components: {
       flOat,
     },
-    methods: {
-      // 失败的提示消息
-      errMsg: function (str) {
-        this.$message({
-          showClose: true,
-          message: str,
-          type: 'error'
-        });
-      },
-      // 成功的提示消息
-      succMsg: function (str) {
-        this.$message({
-          showClose: true,
-          message: str,
-          type: 'success'
-        });
-      },
-    },
+    methods: {},
   }
 </script>
 <style lang="less">

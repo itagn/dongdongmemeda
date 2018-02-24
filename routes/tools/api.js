@@ -15,9 +15,9 @@ const api = {
   async getRedis(auth){
     // 配置基础信息
     const config = {
-        host: info.serverAddress.host,
-        port: 9925, // 已经修改端口，默认6379
-        db: 7,
+        host: info.redis.host,
+        port: info.redis.port, // 已经修改端口，默认6379
+        db: info.redis.db
       }
     // 创建redis连接
     const client = redis.createClient(config)
@@ -37,9 +37,9 @@ const api = {
   async setRedis(auth, str, expires){
     // 配置基础信息
     const config = {
-      host: info.serverAddress.host,
-      port: 9925, // 已经修改端口，默认6379
-      db: 7,
+      host: info.redis.host,
+      port: info.redis.port, // 已经修改端口，默认6379
+      db: info.redis.db
     }
     // 创建redis连接
     const client = redis.createClient(config)

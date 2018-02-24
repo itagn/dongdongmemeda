@@ -190,17 +190,21 @@
         if(res.body.status == 200){
           if(res.body.data){
             const resBlog = res.body.data
-            let arr = []
+            let arr = [];
             for(let i in res.body.comment){
-              let comment = res.body.comment[i]
-              comment.index = res.body.comment.length - parseInt(i)
-              arr.push(comment)
+              let comment = res.body.comment[i];
+              comment.index = res.body.comment.length - parseInt(i);
+              arr.push(comment);
             }
-            this.comments = arr
+            this.comments = arr;
+            console.log(arr)
             for(let i=0;i<this.comments.length;i++){
               this.visible[i] = false;
             }
-            this.see = this.isReply = this.tocomment = this.toreply = [...this.visible];
+            this.see = [...this.visible];
+            this.isReply = [...this.visible];
+            this.tocomment = [...this.visible];
+            this.toreply = [...this.visible];
             if(res.body.isFans){
               this.fanBu = '取消关注';
             }else{
@@ -233,22 +237,6 @@
       }
     },
     methods: {
-      // 失败的提示消息
-      errMsg: function (str) {
-        this.$message({
-          showClose: true,
-          message: str,
-          type: 'error'
-        });
-      },
-      // 成功的提示消息
-      succMsg: function (str) {
-        this.$message({
-          showClose: true,
-          message: str,
-          type: 'success'
-        });
-      },
       fanStar: function () {
         if(this.fanBu == '加个关注'){
           const data = {
@@ -259,9 +247,9 @@
           }
           this.$http.post('/user/addFans', data).then((res, req) => {
             if(res.body.status == 200){
-              this.succMsg('我要做你的迷弟迷妹')
-              this.fanBu = '取消关注'
-              this.author.fansLen++
+              this.succMsg('我要做你的迷弟迷妹');
+              this.fanBu = '取消关注';
+              this.author.fansLen++;
             }else{
               this.errMsg(res.body.msg)
             }
@@ -275,11 +263,11 @@
           }
           this.$http.post('/user/subFans', data).then((res, req) => {
             if(res.body.status == 200){
-              this.succMsg('你让我有点失望')
-              this.fanBu = '加个关注'
-              this.author.fansLen--
+              this.succMsg('你让我有点失望');
+              this.fanBu = '加个关注';
+              this.author.fansLen--;
             }else{
-              this.errMsg(res.body.msg)
+              this.errMsg(res.body.msg);
             }
           })
         }
@@ -368,13 +356,13 @@
         })
       },
       watchHome: function (uid) {
-        this.$router.push({ name: 'user', query: { uid: uid, } })
+        this.$router.push({ name: 'user', query: { uid: uid, } });
       },
       submitComment: function () {
         if(this.user.userId != 'other'){
           if(this.article.textarea.trim()){
-            const date = new Date()
-            const timer = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
+            const date = new Date();
+            const timer = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}`;
             const data = {
               createdBy: this.user.userId,
               author: this.user.username,
@@ -384,21 +372,21 @@
             }
             this.$http.post('/comment/create', data).then((res, req) => {
               if(res.body.status == 200){
-                this.article.textarea = ''
-                this.blog.commentNum++
-                this.succMsg('你确定你的话说完了？')
-                let comment = res.body.data
-                comment.index = this.comments.length+1
-                this.comments.unshift(comment)
+                this.article.textarea = '';
+                this.blog.commentNum++;
+                this.succMsg('你确定你的话说完了？');
+                let comment = res.body.data;
+                comment.index = this.comments.length+1;
+                this.comments.unshift(comment);
               }else{
-                this.errMsg(res.body.msg)
+                this.errMsg(res.body.msg);
               }
             })
           }else{
-            this.errMsg('我的字典里没有“空白”这个单词')
+            this.errMsg('我的字典里没有“空白”这个单词');
           }
         }else{
-          this.errMsg('为什么不问我要邀请码呢')
+          this.errMsg('为什么不问我要邀请码呢');
         }
       },
       removeComment: function (id) {
@@ -408,18 +396,18 @@
         }
         this.$http.post('/comment/remove', data).then((res, req) => {
           if(res.body.status == 200){
-            this.succMsg('我的黑历史不能让别人知道')
-            this.blog.commentNum--
-            this.comments = []
-            this.comments = res.body.data
-            this.visible = []
+            this.succMsg('我的黑历史不能让别人知道');
+            this.blog.commentNum--;
+            this.comments = [];
+            this.comments = res.body.data;
+            this.visible = [];
             for(let i=0;i<this.comments.length;i++){
-              this.visible.push(false)
+              this.visible.push(false);
             }
-            this.see = [...this.visible]
-            this.isReply = [...this.visible]
-            this.tocomment = [...this.visible]
-            this.toreply = [...this.visible]
+            this.see = [...this.visible];
+            this.isReply = [...this.visible];
+            this.tocomment = [...this.visible];
+            this.toreply = [...this.visible];
           }else{
             this.errMsg(res.body.msg)
           }
@@ -428,34 +416,34 @@
       replyMsg: function (data) {
         this.$http.post('/dynamic/create', data).then((res, req) => {
           if(res.body.status == 200){
-            this.succMsg('你的评论我有共鸣')
-            this.comments = []
+            this.succMsg('你的评论我有共鸣');
+            this.comments = [];
             for(let i in res.body.data){
-              let comment = res.body.data[i]
-              comment.index = res.body.data.length - parseInt(i)
-              this.comments.push(comment)
+              let comment = res.body.data[i];
+              comment.index = res.body.data.length - parseInt(i);
+              this.comments.push(comment);
             }
           }else{
-            this.errMsg(res.body.msg)
+            this.errMsg(res.body.msg);
           }
         })
       },
       replySubmit: function (id, index) {
         const date = new Date()
-        const timer = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
+        const timer = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}`;
         const data = {
           blogId: this.blog.blogId,
           commentId: id,
-          timer: timer,
+          createdOn: timer,
           createdBy: this.user.userId,
           author: this.user.username,
           body: this.replyInput,
           prevMsg: '',
           createdTo: '',
         }
-        this.replyInput = ''
-        this.showComment(index)
-        this.replyMsg(data)
+        this.replyInput = '';
+        this.showComment(index);
+        this.replyMsg(data);
       },
       replyTo: function (id, index, author, body) {
         const date = new Date()
@@ -470,9 +458,9 @@
           prevMsg: body,
           createdTo: author,
         }
-        this.replyInput = ''
-        this.showReply(index)
-        this.replyMsg(data)
+        this.replyInput = '';
+        this.showReply(index);
+        this.replyMsg(data);
       },
       upZan: function (id, num, index) {
         const data = {
@@ -481,10 +469,10 @@
         }
         this.$http.post('/comment/up', data).then((res, req) => {
           if(res.body.status == 200){
-            this.succMsg('你觉得这个评论可以打call')
+            this.succMsg('你觉得这个评论可以打call');
             this.comments[this.comments.length - index].up++
           }else{
-            this.errMsg(res.body.msg)
+            this.errMsg(res.body.msg);
           }
         })
       },
@@ -495,10 +483,10 @@
         }
         this.$http.post('/comment/down', data).then((res, req) => {
           if(res.body.status == 200){
-            this.succMsg('为什么会有这样的评论出现在博文里')
-            this.comments[this.comments.length - index].down++
+            this.succMsg('为什么会有这样的评论出现在博文里');
+            this.comments[this.comments.length - index].down++;
           }else{
-            this.errMsg(res.body.msg)
+            this.errMsg(res.body.msg);
           }
         })
       },

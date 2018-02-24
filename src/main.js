@@ -23,6 +23,24 @@ Vue.http.interceptors.push((request, next) => {
   });
 })
 
+
+// 全局失败的提示消息
+Vue.prototype.errMsg =  function (str) {
+  this.$message({
+    showClose: true,
+    message: str,
+    type: 'error'
+  });
+}
+// 全局成功的提示消息
+Vue.prototype.succMsg = function (str) {
+  this.$message({
+    showClose: true,
+    message: str,
+    type: 'success'
+  });
+}
+
 new Vue({
   el: '#app',
   router,

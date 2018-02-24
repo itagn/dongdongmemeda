@@ -183,22 +183,6 @@
       bk.run()
     },
     methods: {
-      // 失败的提示消息
-      errMsg: function (str) {
-        this.$message({
-          showClose: true,
-          message: str,
-          type: 'error'
-        });
-      },
-      // 成功的提示消息
-      succMsg: function (str) {
-        this.$message({
-          showClose: true,
-          message: str,
-          type: 'success'
-        });
-      },
       // 切换登录和注册和邀请码
       toggleTo : function (tab) {
         if(tab.name == 'reg'){
@@ -291,27 +275,27 @@
                       yzm: '',
                     }
                     setTimeout(function () {
-                      _.$router.push({ path: '/home' })
-                    }, 1000)
+                      _.$router.push({ path: '/home' });
+                    }, 1000);
                   }else{
-                    this.errMsg(res.body.msg)
-                    this.getYzm()
-                    this.login.myYzm = ''
+                    this.errMsg(res.body.msg);
+                    this.getYzm();
+                    this.login.myYzm = '';
                   }
                 })
               }else{
-                this.errMsg('验证码口令对不上')
-                this.getYzm()
-                this.login.myYzm = ''
+                this.errMsg('验证码口令对不上');
+                this.getYzm();
+                this.login.myYzm = '';
               }
             }else{
-              this.errMsg('验证码看右边')
+              this.errMsg('验证码看右边');
             }
           }else{
-            this.errMsg('密码忘记输了')
+            this.errMsg('密码忘记输了');
           }
         }else{
-          this.errMsg('用户名？')
+          this.errMsg('用户名？');
         }
       },
       // 打开忘记密码模块

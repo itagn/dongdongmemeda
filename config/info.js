@@ -27,6 +27,11 @@ let info = {
     host: 'smtp.dongdongmemeda.com',
     user: 'admin@dongdongmemeda.com',
     pass: 'caidong@15520489925'
+  },
+  redis: {
+    host: 'localhost',
+    port: 6379,
+    db: 7
   }
 }
 

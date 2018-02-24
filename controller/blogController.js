@@ -149,7 +149,7 @@ module.exports = class extends baseController {
                 const user = await this.DBModule.User.findUser({ _id: val.createdBy })
                 val.userImgURL = user.data[0].userImgURL
               }
-              arr.unshift(replys)
+              arr.unshift(replys);
             }
             const authorObj = await this.DBModule.User.findUser({ _id: data.createdBy })
             const boke = await this.DBModule.Blog.findBlogs({ createdBy: data.createdBy })
