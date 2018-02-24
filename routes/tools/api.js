@@ -59,12 +59,12 @@ const api = {
   sendEmail(email ,auth ,expires){
     // 发件人信息
     const config = {
-      host: info.emailInfo.host, //邮件类型
+      host: info.email.host, //邮件类型
       port: 25, // 端口
       transportMethod: 'SMTP', // 发送邮件方法
       auth: {
-        user: info.emailInfo.user, // 发件人账户
-        pass: info.emailInfo.pass // 发件人密码
+        user: info.email.user, // 发件人账户
+        pass: info.email.pass // 发件人密码
       }
     }
     const smtpTransport = nodeMailer.createTransport(config)

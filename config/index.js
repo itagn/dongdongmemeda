@@ -1,6 +1,6 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 var path = require('path')
-
+var info = require('./info')
 module.exports = {
   build: {
     env: require('./prod.env'),
@@ -23,7 +23,7 @@ module.exports = {
   },
   dev: {
     env: require('./dev.env'),
-    port: 7777,
+    port: info.clientAddress.port,
     autoOpenBrowser: true,
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
@@ -37,7 +37,7 @@ module.exports = {
   },
   pro: {
     env: require('./prod.env'),
-    port: 7777,
+    port: info.clientAddress.port,
     autoOpenBrowser: true,
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',

@@ -148,11 +148,11 @@ module.exports = class extends baseController {
     // 发送验证码到邮箱
     this.sendEmail = async(ctx, next) => {
       const params = ctx.request.body
-      const isFind = await this.DBModule.User.findUser({ username: params.username })
+      const isFind = await this.DBModule.User.findUser({ username: params.username });
       if(isFind.status == 'success' && isFind.data.length > 0){
-        const auth = Math.random().toString(16).slice(2, 8)
+        const auth = Math.random().toString(16).slice(2, 8);
         const expires = 60*3  // 验证码三分钟有效期
-        const isSucc = await api.setRedis(isFind.data[0].email, auth, expires)
+        const isSucc = await api.setRedis(isFind.data[0].email, auth, expires);
         if(isSucc){
           const isSend = api.sendEmail(isFind.data[0].email, auth, expires/60);
           if(isSend){
