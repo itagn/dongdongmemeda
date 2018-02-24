@@ -79,15 +79,6 @@
               </li>
             </ol>
           </div>
-          <div class="blog-field">
-            <h2>博客区域</h2>
-            <ul>
-              <li><a >全部</a></li>
-              <li><a >生活</a></li>
-              <li><a >工作</a></li>
-              <li><a >福利</a></li>
-            </ul>
-          </div>
         </div>
     </div>
   </lay-out>
@@ -490,28 +481,6 @@ export default {
               &:hover{
                 text-decoration: underline;
               }
-            }
-          }
-        }
-      }
-
-      .blog-field{
-        position: absolute;
-        bottom: 30px;
-        width: 100%;
-        ul{
-          list-style: none;
-          width: 100%;
-          position: relative;
-          left: -40px;
-          li{
-            width: 100%;
-            cursor: pointer;
-            text-align: center;
-            a{
-              color: orange;
-              font-size: 20px;
-              text-decoration: none;
             }
           }
         }

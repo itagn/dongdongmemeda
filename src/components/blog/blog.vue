@@ -42,11 +42,11 @@
         <div class="share">
           <ul>
             <li><span>分享到</span></li>
-            <li><a @click="shareWechat" title="分享到朋友圈"><img src="../../assets/wechat.png" />朋友圈</a></li>
-            <li><a @click="shareSina" title="分享到新浪微博"><img src="../../assets/weibo.png" />新浪微博</a></li>
-            <li><a @click="shareQzone" title="分享到QQ空间"><img src="../../assets/qzone.png" />QQ空间</a></li>
-            <li><a @click="shareDouban" title="分享到豆瓣"><img src="../../assets/douban.png" />豆瓣</a></li>
-            <li><a @click="shareRenRen" title="分享到人人网"><img src="../../assets/renren.png" />人人网</a></li>
+            <li><a @click="shareBlog('wechat')" title="分享到朋友圈"><img src="../../assets/wechat.png" />朋友圈</a></li>
+            <li><a @click="shareBlog('sina')" title="分享到新浪微博"><img src="../../assets/weibo.png" />新浪微博</a></li>
+            <li><a @click="shareBlog('qq')" title="分享到QQ空间"><img src="../../assets/qzone.png" />QQ空间</a></li>
+            <li><a @click="shareBlog('douban')" title="分享到豆瓣"><img src="../../assets/douban.png" />豆瓣</a></li>
+            <li><a @click="shareBlog('renren')" title="分享到人人网"><img src="../../assets/renren.png" />人人网</a></li>
           </ul>
         </div>
 
@@ -101,11 +101,11 @@
 
                 <div v-if="tocomment[comment.index - 1]">
                   <el-input type="textarea" v-model="replyInput" class="reply-textarea" v-focus="true"></el-input>
-                  <el-button type="primary" class="reply-submit" @click="replySubmit(comment._id, comment.index)">提交</el-button>
+                  <el-button type="primary" class="reply-submit" @click="replyTo(comment._id, comment.index, '', '')">提交</el-button>
                 </div>
                 <div v-if="toreply[comment.index - 1]">
                   <el-input type="textarea" v-model="replyInput" class="reply-textarea" v-focus="true"></el-input>
-                  <el-button type="primary" class="reply-submit" @click="replyTo(comment._id, comment.index, replyToUser.createdTo, replyToUser.prevMsg )">提交</el-button>
+                  <el-button type="primary" class="reply-submit" @click="replyTo(comment._id, comment.index, replyToUser.createdTo, replyToUser.prevMsg, 'to' )">提交</el-button>
                 </div>
               </div>
             </div>
@@ -276,56 +276,34 @@
         this.article.isQrcode = false
         this.article.qrcode = ''
       },
-      //转发微信朋友圈
-      shareWechat: function () {
+      //转发博客
+      shareBlog: function(plantform) {
         if(this.user.userId != 'other'){
-          const data = {
-            url: this.url,
-          }
-          this.$http.post('/blog/qrcode', data).then((res, req) => {
-            if(res.body.status == 200){
-              this.article.isQrcode = true
-              this.article.qrcode = res.body.data
-            }else{
-              this.errMsg(res.body.msg)
+          if(plantform === 'wechat'){
+            const data = {
+              url: this.url,
             }
-          })
-        }else{
-          this.errMsg('为什么不问我要邀请码呢')
-        }
-      },
-      //转发新浪微博
-      shareSina: function () {
-        if(this.user.userId != 'other'){
-          const sharesinastring = `http://service.weibo.com/share/share.php?&url=${this.url}&title=${this.blog.title}&pic=`
-          window.open(sharesinastring, '_blank')
-        }else{
-          this.errMsg('为什么不问我要邀请码呢')
-        }
-      },
-      //转发QQ空间
-      shareQzone: function() {
-        if(this.user.userId != 'other'){
-          const shareqqzonestring = `https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=${this.url}&title=${this.blog.title}&desc=&summary=&site=&pics=`
-          window.open(shareqqzonestring, '_blank')
-        }else{
-          this.errMsg('为什么不问我要邀请码呢')
-        }
-      },
-      //转发豆瓣
-      shareDouban: function() {
-        if(this.user.userId != 'other'){
-          const shareqqzonestring = `https://www.douban.com/recommend/?url=${this.url}&title=${this.blog.title}&desc=&summary=&site=&pics=`
-          window.open(shareqqzonestring, '_blank')
-        }else{
-          this.errMsg('为什么不问我要邀请码呢')
-        }
-      },
-      //转发人人网
-      shareRenRen: function() {
-        if(this.user.userId != 'other'){
-          const sharerenrenstring = `http://widget.renren.com/dialog/share?resourceUrl=${this.url}&srcUrl=${this.url}&title=${this.blog.title}&description=`
-          window.open(sharerenrenstring,'_blank')
+            this.$http.post('/blog/qrcode', data).then((res, req) => {
+              if(res.body.status == 200){
+                this.article.isQrcode = true
+                this.article.qrcode = res.body.data
+              }else{
+                this.errMsg(res.body.msg)
+              }
+            })
+          } else {
+            let shareUrl = '';
+            if(plantform === 'qq'){
+              shareUrl = `https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=${this.url}&title=${this.blog.title}&desc=&summary=&site=&pics=`;
+            } else if(plantform === 'sina'){
+              shareUrl = `http://service.weibo.com/share/share.php?&url=${this.url}&title=${this.blog.title}&pic=`;
+            } else if(plantform === 'douban'){
+              shareUrl = `https://www.douban.com/recommend/?url=${this.url}&title=${this.blog.title}&desc=&summary=&site=&pics=`;
+            } else if(plantform === 'renren'){
+              shareUrl = `http://widget.renren.com/dialog/share?resourceUrl=${this.url}&srcUrl=${this.url}&title=${this.blog.title}&description=`;
+            }
+            window.open(shareUrl, '_blank');
+          }
         }else{
           this.errMsg('为什么不问我要邀请码呢')
         }
@@ -428,9 +406,9 @@
           }
         })
       },
-      replySubmit: function (id, index) {
+      replyTo: function (id, index, author, body, type) {
         const date = new Date()
-        const timer = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}`;
+        const timer = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}`
         const data = {
           blogId: this.blog.blogId,
           commentId: id,
@@ -438,29 +416,16 @@
           createdBy: this.user.userId,
           author: this.user.username,
           body: this.replyInput,
-          prevMsg: '',
-          createdTo: '',
-        }
-        this.replyInput = '';
-        this.showComment(index);
-        this.replyMsg(data);
-      },
-      replyTo: function (id, index, author, body) {
-        const date = new Date()
-        const timer = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
-        const data = {
-          blogId: this.blog.blogId,
-          commentId: id,
-          timer: timer,
-          createdBy: this.user.userId,
-          author: this.user.username,
-          body: this.replyInput,
           prevMsg: body,
           createdTo: author,
         }
         this.replyInput = '';
-        this.showReply(index);
         this.replyMsg(data);
+        if(type === 'to'){
+          this.showReply(index);
+        } else {
+          this.showComment(index);
+        }
       },
       upZan: function (id, num, index) {
         const data = {
@@ -547,22 +512,16 @@
       width: 100%;
       height: 100%;
       background-color: black;
-      opacity: 0.7;
+      opacity: 0.6;
       z-index: 10;
     }
     .blog-qrcode {
       position: fixed;
-      left: 0;
-      right: 0;
-      top: 0;
-      bottom: 0;
-      margin: auto;
-      width: 180px;
-      height: 207px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       background-color: #FFF;
       z-index: 20;
-      opacity: 1;
-      border: 1px solid #000;
       .qrcode-title {
         position: relative;
         margin-top: 10px;

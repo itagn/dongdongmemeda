@@ -8,9 +8,12 @@
               <img :src="user.userImgURL" @click="watchHome"/>
             </div>
             <div class="user-info">
-              <div class="user-na">用户&nbsp;[<span>{{user.username}}</span>]</div>
-              <div class="user-em">邮箱&nbsp;[<span>{{user.email}}</span>]</div>
-              <div class="user-bl">黑名单&nbsp;[<span v-if="user.blackMD">封禁中</span><span v-if="!user.blackMD">安全</span>]</div>
+              <div class="user-na">用户&nbsp;&nbsp;<span>{{user.username}}</span></div>
+              <div class="user-em">邮箱&nbsp;&nbsp;<span>{{user.email}}</span></div>
+              <div class="user-bl">黑名单&nbsp;&nbsp;
+                <span style="color: #f72671" v-if="user.blackMD">[封禁中]</span>
+                <span style="color: #6ccab8" v-if="!user.blackMD">[安全]</span>
+              </div>
             </div>
           </div>
 
@@ -123,8 +126,11 @@
               }
               this.$http.post('/blog/create', data).then((res, req) => {
                 if(res.body.status == 200){
-                  this.succMsg('快去看看别人这么评价你博文的')
-                  this.resetForm(formName)
+                  this.succMsg('快去看看别人这么评价你博文的');
+                  this.resetForm(formName);
+                  setTimeout(() => {
+                    this.$router.push({ path: '/home' });
+                  }, 1000);
                 }else{
                   this.errMsg(res.body.msg)
                 }
@@ -191,11 +197,6 @@
           .user-em{
             span{
               color: #5d95ea;
-            }
-          }
-          .user-bl{
-            span{
-              color: red;
             }
           }
         }

@@ -305,12 +305,12 @@
       },
       checkName: function(str){
         if(str.length < 11){
-          const exp = new RegExp('^[a-zA-Z0-9_\u4e00-\u9fa5]+$')
+          const exp = new RegExp('^[a-zA-Z0-9_\u4e00-\u9fa5]+$');
           const us = exp.test(str)
           if(us){
             return true
           }else{
-            this.errMsg('用户名只能由中文、数字、英文字母或者下划线组成')
+            this.errMsg('用户名只能由中文、数字、英文字母或者下划线组成');
             return false
           }
         }else{
@@ -327,25 +327,25 @@
             if(ps){
               return true
             }else{
-              this.errMsg('密码只能由数字、英文字母或者下划线组成')
+              this.errMsg('密码只能由数字、英文字母或者下划线组成');
               return false
             }
           }else{
-            this.errMsg('密码少于6位被偷了不负责哦')
+            this.errMsg('密码少于6位被偷了不负责哦');
             return false
           }
         }else{
-          this.errMsg('密码超过20位了我记不住哈')
+          this.errMsg('密码超过20位了我记不住哈');
           return false
         }
       },
       // 注册中
       signUpNext: function () {
-        this.register.step++
+        this.register.step++;
       },
       // 注册中
       signUpPrev: function () {
-        this.register.step--
+        this.register.step--;
       },
       enterSignUp: function (form) {
         this.signUp(form)
@@ -367,9 +367,9 @@
                     yaoqing: this.register.yaoqing,
                   }
                   this.$http.post('/signUp', form).then((res, req) => {
-                    this.register.loading = false
+                    this.register.loading = false;
                     if (res.body.status == 200) {
-                      this.succMsg('恭喜入坑，反正账号你也删不掉了')
+                      this.succMsg('恭喜入坑，反正账号你也删不掉了');
                       this.allow.isLogin = true
                       this.allow.isReg = false
                       this.tab = 'log'
@@ -382,13 +382,13 @@
                         step: 1,
                       }
                     } else {
-                      this.errMsg(res.body.msg)
+                      this.errMsg(res.body.msg);
                     }
                   })
                 }
               }
             }else{
-              this.errMsg('密码如果不一样，应该保存哪个呢？')
+              this.errMsg('密码如果不一样，应该保存哪个呢？');
             }
           } else {
             return false
@@ -398,15 +398,15 @@
       // 关闭遮幕层
       closeMask: function () {
         this.stepCancel()
-        this.allow.isReset = true
-        this.allow.isSend = true
+        this.allow.isReset = true;
+        this.allow.isSend = true;
       },
       // 忘记密码取消按钮
       stepCancel: function () {
-        this.allow.isForget = false
-        this.allow.isMask = false
-        this.allow.isSend = true
-        this.allow.isSure = false
+        this.allow.isForget = false;
+        this.allow.isMask = false;
+        this.allow.isSend = true;
+        this.allow.isSure = false;
         this.active = 0
         this.forget = {
           username: '',
@@ -439,12 +439,12 @@
             username: this.forget.username,
           }
           this.$http.post('/forget/sendEmail', data).then((res, req) => {
-            this.forget.emailLoading = false
+            this.forget.emailLoading = false;
             if(res.body.status == 200){
-              this.active++
-              this.allow.isSend = false
-              this.allow.isSure = true
-              this.succMsg('快去看看给你邮箱发的情书')
+              this.active++;
+              this.allow.isSend = false;
+              this.allow.isSure = true;
+              this.succMsg('快去看看给你邮箱发的情书');
             }else{
               this.errMsg(res.body.msg)
             }
