@@ -26,7 +26,7 @@ let info = {
   emailInfo: {
     host: 'smtp.dongdongmemeda.com',
     user: 'admin@dongdongmemeda.com',
-    pass: 'caidong@15520489925'
+    pass: 'xxxxxxxx'
   },
   redis: {
     host: 'localhost',

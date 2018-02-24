@@ -11,13 +11,21 @@ Vue2 + Koa2 + MongoDB
 1. 服务器启动  npm run start-server
 1. vue启动  npm run dev
 
-本次使用的redis的host为localhost，端口号为默认的6379，数据库为7
-本次使用的mongodb数据库为dongdongmemeda
+本次使用的 **redis** 的配置
 
-数据表为
+    host为localhost
+    端口号为默认的6379
+    数据库为7
 
-  用户数据表  users
-  博客数据表  blogs
-  评论数据表  dynamics
-  邀请码数据表  yaoqings
+本次使用的 **mongodb** 的配置
+
+    数据库 dongdongmemeda
+
+目前所有数据表
+
+    用户数据表  users
+    博客数据表  blogs
+    评论数据表  dynamics
+    邀请码数据表  yaoqings
+
 
